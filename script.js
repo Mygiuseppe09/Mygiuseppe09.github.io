@@ -15,12 +15,13 @@ const popGemStudentPlaylistID = '37i9dQZF1DWSoyxGghlqv5';
 
 //Google Books
 const googleBookEndopoint = 'https://www.googleapis.com/books/v1/volumes?' +
-    'filter=free-ebooks&download=epub&key=AIzaSyDIjGeLo6rDa2ZVtqQCfSCWQckMjy5056M&q=';
+    'filter=free-ebooks&download=epub&key=AIzaSyDIjGeLo6rDa2ZVtqQCfSCWQckMjy5056M' +
+    '&q=intitle+inauthor+isbn+';
 
 // Edamam
 const edamamEndpoint = 'https://api.edamam.com/api/recipes/v2?' +
     'type=public&app_id=30565b65&app_key=73034aee19d65af9495328a8e3a0fd47' +
-    '&imageSize=REGULAR&q=intitle+inauthor+isbn+';
+    '&imageSize=REGULAR&q=';
 
 
 /**************************************** FUNCTIONS ********************************************/
