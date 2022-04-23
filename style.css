@@ -342,7 +342,7 @@ img#open_modal_spotify {
 }
 /******************************** RECIPE MODAL VIEW **********************************/
 
-#modal_view {
+#recipe_modal_view {
     position: fixed;
     top: 0;
     left: 0;
@@ -374,7 +374,7 @@ img#open_modal_spotify {
     max-width: 300px;
 }
 
-#modal_view ul { max-width: 280px; }
+#recipe_modal_view ul { max-width: 280px; }
 
 
 /*********************************** FOOTER ***********************************/
