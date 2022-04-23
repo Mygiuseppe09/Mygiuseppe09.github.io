@@ -7,12 +7,6 @@ body {
     margin: 0;
 }
 
-.nav_text_style {
-    font-family: 'Andika', sans-serif;
-    font-size: 1.2rem;
-    font-weight: normal;
-    color: white;
-}
 
 .big_text_style {
     font-family: 'David Libre', serif;
@@ -130,26 +124,6 @@ body {
 }
 
 .results_text {text-align: center;}
-
-/********************************** NAVBAR ************************************/
-
-nav {
-    max-width: 700px;
-    margin: 0 auto;
-    height: 60px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-nav a {
-    font-weight: bold;
-    background-color: darkcyan;
-    color: white;
-    padding: 10px;
-    border-radius: 35px;
-    text-decoration: none;
-}
 
 /************************************* HEADER *************************************/
 
