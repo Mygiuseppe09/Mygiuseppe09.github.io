@@ -116,6 +116,13 @@ body {
     align-items: flex-start;
 }
 
+@media (max-width: 450px) {
+    /* adattiamo la visualizzazione dei "content-items" su mobile */
+    .library div.content_item {
+        max-width: 370px;
+    }
+}
+
 .results_text {text-align: center;}
 
 /********************************** NAVBAR ************************************/
