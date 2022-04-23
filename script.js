@@ -297,8 +297,8 @@ function closePopup (event) {
     event.currentTarget.addEventListener('click', openPopup);
 }
 
-function openModalView (event) {
-    const modalView = document.querySelector('#modal_view');
+function openRecipeModalView (event) {
+    const modalView = document.querySelector('#recipe_modal_view');
     modalView.classList.remove('hidden');
     document.body.classList.add('no_scroll');
 
@@ -405,7 +405,7 @@ infoBookButton.addEventListener('click', openBookModalView);
 infoSpotifyButton.addEventListener('click', openSpotifyModalView);
 
 for (let image of images) {
-    image.addEventListener('click', openModalView);
+    image.addEventListener('click', openRecipeModalView);
 }
 
 // richiedo il token direttamente all'avvio della pagina
