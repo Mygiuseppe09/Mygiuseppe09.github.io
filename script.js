@@ -16,7 +16,7 @@ const popGemStudentPlaylistID = '37i9dQZF1DWSoyxGghlqv5';
 //Google Books
 const googleBookEndopoint = 'https://www.googleapis.com/books/v1/volumes?' +
     'filter=free-ebooks&download=epub&key=AIzaSyDIjGeLo6rDa2ZVtqQCfSCWQckMjy5056M' +
-    '&q=intitle+inauthor+isbn+';
+    '&q=';
 
 // Edamam
 const edamamEndpoint = 'https://api.edamam.com/api/recipes/v2?' +
@@ -30,23 +30,18 @@ function onEdamamJson(json) {
         console.log(' Documento vuoto... :(  ');
     else {
         console.log(json);
-        let numItemsToImport;
-        if (json.hits.length > 6)
-            numItemsToImport = 6;
-        else
-            numItemsToImport = json.hits.length;
+        // Spostiamoci nel nodo HTML che ci interessa "ripempire"
+        const modalView = document.querySelector('#recipe_modal_view');
+        //inizializziamo la modale ogni qual volta la apriamo
+        modalView.innerHTML = '';
 
-        // Costruiamo l'array principale: in questo caso, vogliamo un array di ricette"
+        // Costruiamo l'array principale: in questo caso, vogliamo un array di ricette
         let recipes = [];
         shuffleArray(json.hits); // così ogni volta mostro sei ricette diverse
-        for (let i = 0; i < numItemsToImport; i++)
-            recipes.push(json.hits[i].recipe); //riempiamolo
 
-        // Spostiamoci nel nodo HTML che ci interessa "ripempire"
-        const modalView = document.querySelector('#modal_view');
-        //inizializziamo la modale ogni qual volta la apriamo
-        modalView.innerHTML = '<img src="icons/close.png" class="close_icon" alt="immagine non trovata">';
-        addListnerToCloseButton();
+        //riempiamo l'array
+        for (let i = 0; i < 6; i++)
+            recipes.push(json.hits[i].recipe); //riempiamolo
 
         for (let recipe of recipes) {
             // prendiamo quello che vogliamo "importare nel nostro sito"
@@ -257,11 +252,6 @@ function onResponse(response) {
     return response.json();
 }
 
-function addListnerToCloseButton () {
-    const closeIcon = document.querySelector('#modal_view img.close_icon');
-    closeIcon.addEventListener('click', closeModalView);
-}
-
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -303,14 +293,19 @@ function openRecipeModalView (event) {
     modalView.classList.remove('hidden');
     document.body.classList.add('no_scroll');
 
+    const closeButton = document.querySelector('#close_button');
+    closeButton.classList.remove('hidden');
+    closeButton.addEventListener('click', closeRecipeModalView);
+
     const fetchPromise = fetch(edamamEndpoint + event.currentTarget.dataset.id);
     const json = fetchPromise.then(onResponse);
     json.then(onEdamamJson);
 }
 
-function closeModalView () {
-    const modalView = document.querySelector('#modal_view');
+function closeRecipeModalView () {
+    const modalView = document.querySelector('#recipe_modal_view');
     modalView.classList.add('hidden');
+    document.querySelector('#close_button').classList.add('hidden');
     document.body.classList.remove('no_scroll');
 }
 
@@ -319,7 +314,8 @@ function openBookModalView() {
     bookModalView.classList.remove('hidden');
     document.body.classList.add('no_scroll');
 
-    const closeButton = document.querySelector('#book_modal_view img');
+    const closeButton = document.querySelector('#close_button');
+    closeButton.classList.remove('hidden');
     closeButton.addEventListener('click', closeBookModalView);
 
     // Aggiungo event listener al form per la ricerca
@@ -330,6 +326,7 @@ function openBookModalView() {
 function closeBookModalView () {
     const bookModalView = document.querySelector('#book_modal_view');
     bookModalView.classList.add('hidden');
+    document.querySelector('#close_button').classList.add('hidden');
     document.body.classList.remove('no_scroll');
 }
 
@@ -338,7 +335,8 @@ function openSpotifyModalView() {
     spotifyModalView.classList.remove('hidden');
     document.body.classList.add('no_scroll');
 
-    const closeButton = document.querySelector('#spotify_modal_view img');
+    const closeButton = document.querySelector('#close_button');
+    closeButton.classList.remove('hidden');
     closeButton.addEventListener('click', closeSpotifyModalView);
 
     // richiedo l'accesso alla playlist "Pop Gem Student"
@@ -358,6 +356,7 @@ function openSpotifyModalView() {
 function closeSpotifyModalView () {
     const spotifyModalView = document.querySelector('#spotify_modal_view');
     spotifyModalView.classList.add('hidden');
+    document.querySelector('#close_button').classList.add('hidden');
     document.body.classList.remove('no_scroll');
 }
 
