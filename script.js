@@ -1,4 +1,5 @@
 /*********************************** GLOBAL VARIABLES ********************************/
+
 const infoRecipeButton = document.querySelector('img#inform_the_user');
 const infoBookButton = document.querySelector('img#open_modal_book');
 const infoSpotifyButton = document.querySelector('img#open_modal_spotify');
@@ -24,7 +25,80 @@ const edamamEndpoint = 'https://api.edamam.com/api/recipes/v2?' +
     '&imageSize=REGULAR&q=';
 
 
-/**************************************** FUNCTIONS ********************************************/
+/**************************************** FUNCTIONS *****************************************/
+
+function insertSongsIntoWebSite(songs,musicLibrary) {
+    //cicliamo l'array
+    for (let song of songs) { // si ha: SONG = "TRACK" nel file json
+        // prendiamo quello che vogliamo "importare nel nostro sito"
+        const songName = song.name;
+        const imageSource = song.album.images[1].url; // 300x300
+        const preview = song.preview_url;
+
+        // creiamo gli elementi HTML adatti a sfruttare le variabili soprastanti
+        const songContainer = document.createElement('div');
+        songContainer.classList.add('content_item');
+
+        const songNameContainer = document.createElement('p');
+        songNameContainer.classList.add('big_text_style');
+        songNameContainer.classList.add('sub_content_item');
+        const songImageContainer = document.createElement('img');
+        songImageContainer.classList.add('sub_content_item');
+        const previewContainer = document.createElement('div');
+        previewContainer.classList.add('sub_content_item');
+        previewContainer.classList.add('image_container');
+        const linkToPreview = document.createElement('a');
+        linkToPreview.setAttribute('href', preview);
+        linkToPreview.setAttribute('target','_blank');
+
+        // inizializzazione
+        songNameContainer.innerText = songName;
+        songImageContainer.src = imageSource;
+        linkToPreview.innerText = 'PL';
+
+        // formattazione
+        previewContainer.appendChild(linkToPreview);
+        songContainer.appendChild(songNameContainer);
+        songContainer.appendChild(songImageContainer);
+        songContainer.appendChild(previewContainer);
+
+        musicLibrary.appendChild(songContainer);
+    }
+}
+
+function takeOnlyWithMP3(songArray) {
+    //songArray = array di "track" nel json
+    let filteredArray = [];
+    for (let song of songArray) {
+        if (song.preview_url != null) {
+            filteredArray.push(song);
+        }
+    }
+    return filteredArray;
+}
+
+function takeOnlyWithShortTitle(booksArray) {
+    let filteredArray = [];
+
+    for (let book of booksArray) {
+        if (book.volumeInfo.title.length <= 100)
+            filteredArray.push(book);
+    }
+
+    return filteredArray;
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+/********************************** PROMISE'S HANDLERS ******************************/
+
 function onEdamamJson(json) {
     if (!json)
         console.log(' Documento vuoto... :(  ');
@@ -51,17 +125,17 @@ function onEdamamJson(json) {
 
             // creiamo gli elementi HTML adatti a sfruttare le variabili soprastanti
             const recipeContainer = document.createElement('div');
-                    recipeContainer.classList.add('content_item');
+            recipeContainer.classList.add('content_item');
             const titleContainer = document.createElement('p');
-                    titleContainer.classList.add('big_text_style');
-                    titleContainer.classList.add('sub_content_item');
+            titleContainer.classList.add('big_text_style');
+            titleContainer.classList.add('sub_content_item');
             const imageContainer = document.createElement('img');
-                    imageContainer.classList.add('sub_content_item');
+            imageContainer.classList.add('sub_content_item');
             const ingredientsContainer = document.createElement('p');
             const ingredientBulletPointContainer = document.createElement('ul');
-                    ingredientsContainer.classList.add('content_text_style');
-                    ingredientsContainer.classList.add('sub_content_item');
-                    ingredientBulletPointContainer.classList.add('content_text_style');
+            ingredientsContainer.classList.add('content_text_style');
+            ingredientsContainer.classList.add('sub_content_item');
+            ingredientBulletPointContainer.classList.add('content_text_style');
 
             // inizializzazione
             titleContainer.innerText = recipeTitle;
@@ -133,56 +207,6 @@ function onSpotifySearchJson(json) {
     }
 }
 
-function insertSongsIntoWebSite(songs,musicLibrary) {
-    //cicliamo l'array
-    for (let song of songs) { // si ha: SONG = "TRACK" nel file json
-        // prendiamo quello che vogliamo "importare nel nostro sito"
-        const songName = song.name;
-        const imageSource = song.album.images[1].url; // 300x300
-        const preview = song.preview_url;
-
-        // creiamo gli elementi HTML adatti a sfruttare le variabili soprastanti
-        const songContainer = document.createElement('div');
-        songContainer.classList.add('content_item');
-
-        const songNameContainer = document.createElement('p');
-        songNameContainer.classList.add('big_text_style');
-        songNameContainer.classList.add('sub_content_item');
-        const songImageContainer = document.createElement('img');
-        songImageContainer.classList.add('sub_content_item');
-        const previewContainer = document.createElement('div');
-        previewContainer.classList.add('sub_content_item');
-        previewContainer.classList.add('image_container');
-        const linkToPreview = document.createElement('a');
-        linkToPreview.setAttribute('href', preview);
-        linkToPreview.setAttribute('target','_blank');
-
-        // inizializzazione
-        songNameContainer.innerText = songName;
-        songImageContainer.src = imageSource;
-        linkToPreview.innerText = 'PL';
-
-        // formattazione
-        previewContainer.appendChild(linkToPreview);
-        songContainer.appendChild(songNameContainer);
-        songContainer.appendChild(songImageContainer);
-        songContainer.appendChild(previewContainer);
-
-        musicLibrary.appendChild(songContainer);
-    }
-}
-
-function takeOnlyWithMP3(songArray) {
-    //songArray = array di "track" nel json
-    let filteredArray = [];
-    for (let song of songArray) {
-        if (song.preview_url != null) {
-            filteredArray.push(song);
-        }
-    }
-    return filteredArray;
-}
-
 function onGoogleBookJson(json) {
     if (!json)
         console.log(' Documento vuoto... :(  ');
@@ -236,31 +260,6 @@ function onGoogleBookJson(json) {
     }
 }
 
-function takeOnlyWithShortTitle(booksArray) {
-    let filteredArray = [];
-
-    for (let book of booksArray) {
-        if (book.volumeInfo.title.length <= 100)
-            filteredArray.push(book);
-    }
-
-    return filteredArray;
-}
-
-function onResponse(response) {
-    console.log(response);
-    return response.json();
-}
-
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
-
 function getToken(json) {
     console.log(json);
     token = json.access_token;
@@ -272,7 +271,13 @@ function onTokenResponse(response) {
     return response.json();
 }
 
-/******************************** HANDLERS ********************************/
+function onResponse(response) {
+    console.log(response);
+    return response.json();
+}
+
+/************************************* EVENT'S HANDLERS ******************************/
+
 function openPopup (event)  {
     const popup = document.querySelector('#API_Information');
     popup.classList.remove('hidden');
@@ -298,8 +303,8 @@ function openRecipeModalView (event) {
     closeButton.addEventListener('click', closeRecipeModalView);
 
     const fetchPromise = fetch(edamamEndpoint + event.currentTarget.dataset.id);
-    const json = fetchPromise.then(onResponse);
-    json.then(onEdamamJson);
+    const jsonPromise = fetchPromise.then(onResponse);
+    jsonPromise.then(onEdamamJson);
 }
 
 function closeRecipeModalView () {
